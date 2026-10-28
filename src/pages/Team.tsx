@@ -1,8 +1,17 @@
-import { motion } from "framer-motion";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import Layout from "@/components/layout/Layout";
-import { Linkedin, Mail } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Linkedin, Mail } from "lucide-react";
 import SEO from "@/components/SEO";
+import PageHero from "@/components/ui/PageHero";
+import { Reveal } from "@/components/motion/Reveal";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { optimizeImage } from "@/lib/utils";
 
 const teamMembers = [
   {
@@ -87,129 +96,159 @@ const teamMembers = [
   },
 ];
 
+type TeamMember = (typeof teamMembers)[number];
+
 const Team = () => {
+  const [selected, setSelected] = useState<TeamMember | null>(null);
+
   return (
     <Layout>
-      {/* Hero Section */}
-      <section className="relative pt-32 pb-20 bg-navy-gradient overflow-hidden">
-        <div className="absolute inset-0 opacity-5">
-          <div
-            className="absolute inset-0"
-            style={{
-              backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23CFA44A' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-            }}
-          />
-        </div>
-        <div className="container-custom relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="max-w-3xl"
-          >
-            <span className="inline-block text-accent font-medium text-sm uppercase tracking-wider mb-4">
-              Our Team
-            </span>
-            <h1 className="font-playfair text-4xl md:text-5xl lg:text-6xl font-semibold text-white mb-6">
-              Partners & Associates
-            </h1>
-            <p className="text-xl text-white/70 leading-relaxed">
-              Meet the experienced legal professionals dedicated to delivering
-              excellence and achieving the best outcomes for our clients.
-            </p>
-          </motion.div>
-        </div>
-      </section>
+      <SEO
+        title="Our Team"
+        description="Meet the partners and associates of O.A. Kolawole & Co., experienced Nigerian legal professionals dedicated to delivering excellence for our clients."
+        canonicalUrl="/team"
+      />
+      <PageHero
+        label="Our Team"
+        title="Partners &"
+        accent="Associates"
+        description="Meet the experienced legal professionals dedicated to delivering excellence and achieving the best outcomes for our clients."
+      />
 
       {/* Team Grid */}
       <section className="section-padding bg-background">
         <div className="container-custom">
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {teamMembers.map((member, index) => (
-              <motion.div
-                key={member.name}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="group"
-              >
-                <div className="bg-card rounded-2xl overflow-hidden shadow-soft transition-all duration-300 hover:shadow-elegant">
-                  <div className="relative aspect-[4/5] overflow-hidden">
+              <Reveal key={member.name} delay={(index % 3) * 0.1} className="h-full">
+                <article className="group h-full flex flex-col bg-card rounded-3xl overflow-hidden border border-border shadow-soft transition-all duration-500 hover:shadow-lift hover:-translate-y-2">
+                  <button
+                    type="button"
+                    onClick={() => setSelected(member)}
+                    className="relative aspect-[4/5] overflow-hidden text-left"
+                    aria-label={`Read the full profile of ${member.name}`}
+                  >
                     <img
-                      src={member.image}
+                      src={optimizeImage(member.image, 700)}
                       alt={member.name}
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      loading="lazy"
+                      className="w-full h-full object-cover object-top transition-all duration-700 group-hover:scale-105"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-navy/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-navy/90 via-navy/10 to-transparent opacity-60 transition-opacity duration-500 group-hover:opacity-100" />
+                    <span className="absolute left-5 bottom-5 inline-flex items-center gap-1.5 rounded-full bg-white/95 px-4 py-2 text-sm font-medium text-navy opacity-0 translate-y-4 transition-all duration-500 group-hover:opacity-100 group-hover:translate-y-0">
+                      View profile
+                      <ArrowUpRight size={16} />
+                    </span>
+                    <span className="absolute bottom-0 left-0 right-0 h-1 bg-accent scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
+                  </button>
 
-                    {/* Hover Actions */}
-                    <div className="absolute bottom-4 left-4 right-4 flex gap-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <div className="flex flex-1 flex-col p-6">
+                    <p className="text-accent font-medium text-xs uppercase tracking-[0.15em] mb-2">
+                      {member.role}
+                    </p>
+                    <h3
+                      className="font-playfair text-xl font-semibold text-primary mb-3 line-clamp-2"
+                      title={member.name}
+                    >
+                      {member.name}
+                    </h3>
+                    <p className="text-muted-foreground text-sm leading-relaxed line-clamp-3 mb-5">
+                      {member.bio}
+                    </p>
+                    <div className="mt-auto flex items-center gap-2 border-t border-border pt-4">
                       <a
                         href={`mailto:${member.email}`}
-                        className="w-10 h-10 bg-white/90 rounded-full flex items-center justify-center hover:bg-accent transition-colors"
+                        className="flex h-10 w-10 items-center justify-center rounded-full border border-border text-primary transition-all hover:border-accent hover:bg-accent hover:text-accent-foreground"
                         aria-label={`Email ${member.name}`}
                       >
-                        <Mail size={18} className="text-navy" />
+                        <Mail size={16} />
                       </a>
                       <a
                         href={member.linkedin}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="w-10 h-10 bg-white/90 rounded-full flex items-center justify-center hover:bg-accent transition-colors"
+                        className="flex h-10 w-10 items-center justify-center rounded-full border border-border text-primary transition-all hover:border-accent hover:bg-accent hover:text-accent-foreground"
                         aria-label={`LinkedIn profile of ${member.name}`}
                       >
-                        <Linkedin size={18} className="text-navy" />
+                        <Linkedin size={16} />
                       </a>
+                      <button
+                        type="button"
+                        onClick={() => setSelected(member)}
+                        className="ml-auto text-sm font-medium text-accent hover:underline underline-offset-4"
+                      >
+                        Read bio
+                      </button>
                     </div>
-
-                    {/* Gold accent line */}
-                    <div className="absolute bottom-0 left-0 right-0 h-1 bg-accent scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
                   </div>
-                  <div className="p-6">
-                    <h3 className="font-playfair text-xl font-semibold text-primary mb-1 line-clamp-1" title={member.name}>
-                      {member.name}
-                    </h3>
-                    <p className="text-accent font-medium text-sm mb-3">
-                      {member.role}
-                    </p>
-                    <p className="text-muted-foreground text-sm leading-relaxed line-clamp-3" title={member.bio}>
-                      {member.bio}
-                    </p>
-                  </div>
-                </div>
-              </motion.div>
+                </article>
+              </Reveal>
             ))}
           </div>
         </div>
       </section>
 
+      {/* Profile dialog */}
+      <Dialog open={selected !== null} onOpenChange={(open) => !open && setSelected(null)}>
+        <DialogContent className="w-[calc(100%-2rem)] max-w-3xl p-0 overflow-hidden gap-0 rounded-3xl sm:rounded-3xl">
+          {selected && (
+            <div className="grid sm:grid-cols-[2fr_3fr] max-h-[85vh] overflow-y-auto">
+              <div className="relative aspect-[4/5] sm:aspect-auto bg-navy">
+                <img
+                  src={optimizeImage(selected.image, 600)}
+                  alt={selected.name}
+                  className="absolute inset-0 w-full h-full object-cover object-top"
+                />
+              </div>
+              <div className="p-7 sm:p-9">
+                <p className="text-accent font-medium text-xs uppercase tracking-[0.15em] mb-3">
+                  {selected.role}
+                </p>
+                <DialogTitle className="font-playfair text-2xl font-semibold text-primary leading-snug mb-4">
+                  {selected.name}
+                </DialogTitle>
+                <span className="block h-px w-12 bg-accent mb-5" />
+                <DialogDescription className="text-muted-foreground leading-relaxed text-[15px]">
+                  {selected.bio}
+                </DialogDescription>
+                <div className="mt-8 flex flex-wrap gap-3">
+                  <a href={`mailto:${selected.email}`} className="btn-gold h-11 px-5 text-sm">
+                    <Mail size={16} />
+                    Email
+                  </a>
+                  <a
+                    href={selected.linkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex h-11 items-center gap-2 rounded-full border border-border px-5 text-sm font-medium text-primary transition-colors hover:border-accent hover:text-accent"
+                  >
+                    <Linkedin size={16} />
+                    LinkedIn
+                  </a>
+                </div>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
+
       {/* Join Us CTA */}
       <section className="section-padding bg-secondary">
-        <div className="container-custom">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center max-w-2xl mx-auto"
-          >
-            <h2 className="font-playfair text-3xl md:text-4xl font-semibold text-primary mb-4">
-              Join Our Team
-            </h2>
-            <p className="text-muted-foreground text-lg mb-8">
-              We are always looking for talented legal professionals who share
-              our commitment to excellence and client service. Explore
-              opportunities to grow with us.
-            </p>
-            <Link
-              to="/contact"
-              className="inline-flex items-center gap-2 bg-accent hover:bg-accent/90 text-accent-foreground font-medium px-8 py-3 rounded-md transition-all"
-            >
-              Get in Touch
-            </Link>
-          </motion.div>
-        </div>
+        <Reveal className="container-custom text-center max-w-2xl">
+          <span className="eyebrow mb-5">Careers</span>
+          <h2 className="font-playfair text-3xl md:text-4xl font-semibold text-primary mb-4">
+            Join Our Team
+          </h2>
+          <p className="text-muted-foreground text-lg mb-8">
+            We are always looking for talented legal professionals who share
+            our commitment to excellence and client service. Explore
+            opportunities to grow with us.
+          </p>
+          <Link to="/contact" className="btn-gold h-14 px-8">
+            Get in Touch
+            <ArrowRight size={18} />
+          </Link>
+        </Reveal>
       </section>
     </Layout>
   );

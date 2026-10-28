@@ -107,6 +107,30 @@
     @apply bg-background text-foreground font-inter antialiased;
   }
 
+  ::selection {
+    background: hsl(var(--gold) / 0.35);
+    color: hsl(var(--navy));
+  }
+
+  :focus-visible {
+    outline: 2px solid hsl(var(--gold));
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
   h1,
   h2,
   h3,
@@ -141,6 +165,65 @@
   .container-custom {
     @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
   }
+
+  /* Small uppercase label with a gold rule before it */
+  .eyebrow {
+    @apply inline-flex items-center gap-3 text-accent font-medium text-xs sm:text-sm uppercase tracking-[0.2em];
+  }
+
+  .eyebrow::before {
+    content: "";
+    @apply block h-px w-8 bg-accent;
+  }
+
+  /* Primary gold call-to-action */
+  .btn-gold {
+    @apply relative isolate inline-flex items-center justify-center gap-2 overflow-hidden rounded-full bg-accent px-7 h-12 text-sm sm:text-base font-medium text-accent-foreground transition-all duration-300 hover:-translate-y-0.5;
+  }
+
+  .btn-gold:hover {
+    box-shadow: 0 14px 30px -12px hsl(var(--gold) / 0.7);
+  }
+
+  /* Outline button for use on navy backgrounds */
+  .btn-outline-light {
+    @apply relative isolate inline-flex items-center justify-center gap-2 overflow-hidden rounded-full border border-white/25 px-7 h-12 text-sm sm:text-base font-medium text-white transition-all duration-300 hover:border-accent hover:text-accent hover:-translate-y-0.5;
+  }
+
+  /* Light sweep across buttons on hover */
+  .btn-gold::after,
+  .btn-outline-light::after {
+    content: "";
+    @apply absolute inset-0 -z-10;
+    background: linear-gradient(
+      100deg,
+      transparent 20%,
+      rgb(255 255 255 / 0.35) 50%,
+      transparent 80%
+    );
+    transform: translateX(-110%);
+    transition: transform 0.7s ease;
+  }
+
+  .btn-gold:hover::after,
+  .btn-outline-light:hover::after {
+    transform: translateX(110%);
+  }
+
+  /* Cursor-following gold glow for cards (see SpotlightCard) */
+  .spotlight::before {
+    content: "";
+    @apply pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500;
+    background: radial-gradient(
+      420px circle at var(--spot-x, 50%) var(--spot-y, 50%),
+      hsl(var(--gold) / 0.14),
+      transparent 45%
+    );
+  }
+
+  .spotlight:hover::before {
+    @apply opacity-100;
+  }
 }
 
 @layer utilities {
@@ -156,5 +239,33 @@
   /* Elegant shadow for images */
   .shadow-elegant {
     box-shadow: 0 10px 40px -10px rgba(15, 26, 42, 0.15);
+  }
+
+  .shadow-lift {
+    box-shadow: 0 30px 60px -25px rgba(11, 27, 63, 0.35);
+  }
+
+  /* Fine gold grid used behind navy sections */
+  .bg-grid-gold {
+    background-image:
+      linear-gradient(hsl(var(--gold) / 0.5) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(var(--gold) / 0.5) 1px, transparent 1px);
+    background-size: 56px 56px;
+  }
+
+  .mask-radial {
+    mask-image: radial-gradient(ellipse at center, black 25%, transparent 75%);
+  }
+
+  .text-gradient-gold {
+    background-image: linear-gradient(
+      100deg,
+      hsl(var(--gold)) 0%,
+      hsl(42 70% 72%) 50%,
+      hsl(var(--gold)) 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
   }
 }

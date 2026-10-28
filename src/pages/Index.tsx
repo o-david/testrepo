@@ -1,5 +1,6 @@
 import Layout from "@/components/layout/Layout";
 import Hero from "@/components/home/Hero";
+import PracticeMarquee from "@/components/home/PracticeMarquee";
 import PracticeAreas from "@/components/home/PracticeAreas";
 import AboutPreview from "@/components/home/AboutPreview";
 import Achievements from "@/components/home/Achievements";
@@ -41,6 +42,7 @@ const Index = () => {
         }}
       />
       <Hero />
+      <PracticeMarquee />
       <PracticeAreas />
       <AboutPreview />
       <Achievements />

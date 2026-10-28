@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
-import { MapPin, Phone, Mail, ArrowRight } from "lucide-react";
+import { MapPin, Phone, Mail, ArrowRight, ArrowUp } from "lucide-react";
 import { logo } from "@/assets";
+import HeroBackdrop from "@/components/ui/HeroBackdrop";
+import { Reveal, WordReveal } from "@/components/motion/Reveal";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -25,40 +26,40 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="bg-navy-gradient text-white/90">
+    <footer className="relative bg-navy-gradient text-white/90 overflow-hidden">
       {/* CTA Section */}
-      <div className="border-b border-white/10">
-        <div className="container-custom py-16 md:py-20">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center max-w-3xl mx-auto"
-          >
-            <h2 className="font-playfair text-3xl md:text-4xl lg:text-5xl font-semibold mb-6">
-              Let's Discuss Your{" "}
-              <span className="text-accent">Legal Needs</span>
+      <div className="relative border-b border-white/10">
+        <HeroBackdrop />
+        <div className="container-custom relative py-20 md:py-28">
+          <div className="text-center max-w-3xl mx-auto">
+            <Reveal>
+              <span className="eyebrow mb-6">Get in Touch</span>
+            </Reveal>
+            <h2 className="font-playfair text-3xl md:text-4xl lg:text-6xl font-semibold mb-6 leading-tight text-white">
+              <WordReveal text="Let's Discuss Your" accent="Legal Needs" />
             </h2>
-            <p className="text-white/70 text-lg mb-8">
-              We would be honored to represent you and your legal interests.
-              Schedule a consultation with our experienced team today.
-            </p>
-            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-              <Link
-                to="/contact"
-                className="inline-flex items-center gap-2 bg-accent hover:bg-accent/90 text-accent-foreground font-medium px-8 py-4 rounded-md transition-all"
-              >
-                Schedule a Consultation
-                <ArrowRight size={18} />
-              </Link>
-            </motion.div>
-          </motion.div>
+            <Reveal delay={0.2}>
+              <p className="text-white/70 text-lg mb-10">
+                We would be honored to represent you and your legal interests.
+                Schedule a consultation with our experienced team today.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Link to="/contact" className="btn-gold h-14 px-8">
+                  Schedule a Consultation
+                  <ArrowRight size={18} />
+                </Link>
+                <a href="tel:09022043227" className="btn-outline-light h-14 px-8">
+                  <Phone size={18} />
+                  090 2204 3227
+                </a>
+              </div>
+            </Reveal>
+          </div>
         </div>
       </div>
 
       {/* Main Footer */}
-      <div className="container-custom py-16">
+      <div className="container-custom relative py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8">
           {/* Brand Column */}
           <div className="lg:col-span-1">
@@ -101,8 +102,9 @@ const Footer = () => {
                 <li key={link.path}>
                   <Link
                     to={link.path}
-                    className="text-white/60 hover:text-accent transition-colors text-sm"
+                    className="group inline-flex items-center gap-2 text-white/60 hover:text-accent transition-colors text-sm"
                   >
+                    <span className="h-px w-0 bg-accent transition-all duration-300 group-hover:w-4" />
                     {link.name}
                   </Link>
                 </li>
@@ -120,8 +122,9 @@ const Footer = () => {
                 <li key={link.path}>
                   <Link
                     to={link.path}
-                    className="text-white/60 hover:text-accent transition-colors text-sm"
+                    className="group inline-flex items-center gap-2 text-white/60 hover:text-accent transition-colors text-sm"
                   >
+                    <span className="h-px w-0 bg-accent transition-all duration-300 group-hover:w-4" />
                     {link.name}
                   </Link>
                 </li>
@@ -176,6 +179,14 @@ const Footer = () => {
             © {currentYear} O.A. Kolawole & Co. All rights reserved.
           </p>
           <div className="flex items-center gap-6">
+            <button
+              type="button"
+              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+              className="group flex h-10 w-10 items-center justify-center rounded-full border border-white/15 text-white/70 transition-all hover:border-accent hover:bg-accent hover:text-accent-foreground"
+              aria-label="Back to top"
+            >
+              <ArrowUp size={16} className="transition-transform group-hover:-translate-y-0.5" />
+            </button>
             <Link
               to="/privacy"
               className="text-white/50 hover:text-accent text-sm transition-colors"

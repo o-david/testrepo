@@ -1,7 +1,8 @@
-import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { Scale, Briefcase, Zap, Globe, ArrowRight } from "lucide-react";
+import { Scale, Briefcase, Zap, Globe, ArrowRight, ArrowUpRight } from "lucide-react";
 import SectionHeader from "@/components/ui/SectionHeader";
+import SpotlightCard from "@/components/ui/SpotlightCard";
+import { Reveal } from "@/components/motion/Reveal";
 
 const practices = [
   {
@@ -43,49 +44,47 @@ const PracticeAreas = () => {
           title="Our Core Practice Areas"
           description="We provide comprehensive legal services tailored to meet the unique needs of each client, combining expertise with innovative strategies."
         />
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           {practices.map((practice, index) => (
-            <motion.div
-              key={practice.title}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-            >
+            <Reveal key={practice.title} delay={index * 0.1} className="h-full">
               <Link to={practice.link} className="block group h-full">
-                <div className="relative h-full p-8 bg-card rounded-xl border border-border shadow-soft transition-all duration-300 hover:shadow-elegant hover:border-accent/30 hover:-translate-y-1">
-                  <div className="w-14 h-14 rounded-lg bg-accent/10 flex items-center justify-center mb-6 transition-transform duration-300 group-hover:scale-110">
-                    <practice.icon className="w-7 h-7 text-accent" />
+                <SpotlightCard className="h-full p-8 bg-card rounded-2xl border border-border shadow-soft transition-all duration-500 group-hover:shadow-lift group-hover:border-accent/40 group-hover:-translate-y-2">
+                  <div className="relative flex items-start justify-between mb-10">
+                    <div className="w-14 h-14 rounded-xl bg-accent/10 flex items-center justify-center transition-all duration-500 group-hover:bg-accent group-hover:rotate-[-6deg]">
+                      <practice.icon className="w-7 h-7 text-accent transition-colors duration-500 group-hover:text-accent-foreground" />
+                    </div>
+                    <span className="font-playfair text-4xl font-semibold text-border transition-colors duration-500 group-hover:text-accent/30">
+                      0{index + 1}
+                    </span>
                   </div>
-                  <h3 className="font-playfair text-xl font-semibold text-primary mb-3">
+                  <h3 className="relative font-playfair text-xl font-semibold text-primary mb-3">
                     {practice.title}
                   </h3>
-                  <p className="text-muted-foreground text-sm leading-relaxed mb-4">
+                  <p className="relative text-muted-foreground text-sm leading-relaxed mb-6">
                     {practice.description}
                   </p>
-                  <span className="inline-flex items-center gap-1 text-accent text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity">
-                    Learn More <ArrowRight size={14} />
+                  <span className="relative inline-flex items-center gap-1.5 text-accent text-sm font-medium">
+                    Learn More
+                    <ArrowUpRight
+                      size={16}
+                      className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                    />
                   </span>
-                </div>
+                  <span className="absolute bottom-0 left-0 h-1 w-full origin-left scale-x-0 bg-accent transition-transform duration-500 group-hover:scale-x-100" />
+                </SpotlightCard>
               </Link>
-            </motion.div>
+            </Reveal>
           ))}
         </div>
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.4 }}
-          className="text-center mt-12"
-        >
+        <Reveal delay={0.3} className="text-center mt-14">
           <Link
             to="/practice"
-            className="inline-flex items-center gap-2 text-accent font-medium hover:gap-3 transition-all"
+            className="group inline-flex items-center gap-2 text-primary font-medium border-b border-accent pb-1 hover:text-accent transition-colors"
           >
             View All Practice Areas
-            <ArrowRight size={18} />
+            <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
           </Link>
-        </motion.div>
+        </Reveal>
       </div>
     </section>
   );

@@ -4,7 +4,8 @@ export interface BlogPost {
   title: string;
   excerpt: string;
   content: string;
-  image: string;
+  /** Cover photo URL. When omitted, a branded cover is drawn for the category. */
+  image?: string;
   author: string;
   date: string;
   readTime: string;
@@ -49,8 +50,6 @@ export const articles: BlogPost[] = [
       <h3>Conclusion</h3>
       <p>While the Nigerian business environment presents challenges, the legal framework is designed to protect and encourage foreign investment. Engaging with experienced legal counsel is the first step towards a successful entry into the Nigerian market.</p>
     `,
-    image:
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
     author: "Oluwole Kolawole",
     date: "December 15, 2024",
     readTime: "8 min read",
@@ -84,8 +83,6 @@ export const articles: BlogPost[] = [
       <h3>Conclusion</h3>
       <p>Staying compliant with immigration laws is critical for the smooth operation of businesses employing expatriates. We recommend an immediate audit of all expatriate documents to ensure alignment with the new 2025 regulations.</p>
     `,
-    image:
-      "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
     author: "Aniefiok Ekanem",
     date: "December 10, 2024",
     readTime: "5 min read",
@@ -114,8 +111,6 @@ export const articles: BlogPost[] = [
       <h3>Conclusion</h3>
       <p>The energy sector remains the backbone of Nigeria's economy. The current reforms aim to increase transparency and attract patient capital. Investors who understand these new rules will be best positioned to reap significant returns.</p>
     `,
-    image:
-      "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
     author: "Funmi Joseph",
     date: "November 28, 2024",
     readTime: "10 min read",
@@ -154,8 +149,6 @@ export const articles: BlogPost[] = [
       <h3>Conclusion</h3>
       <p>Whether in Lagos or Abuja, due diligence and prompt perfection of title are non-negotiable for securing your real estate investment.</p>
     `,
-    image:
-      "https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
     author: "Gbenga Lamina",
     date: "November 15, 2024",
     readTime: "7 min read",
@@ -184,8 +177,6 @@ export const articles: BlogPost[] = [
       <h3>Conclusion</h3>
       <p>A proactive approach to labour law compliance, including having a robust Employee Handbook, protects the company and fosters a positive work environment.</p>
     `,
-    image:
-      "https://images.unsplash.com/photo-1521737711867-e3b97375f902?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
     author: "Evelyn M. Kolawole",
     date: "November 5, 2024",
     readTime: "6 min read",
@@ -215,8 +206,6 @@ export const articles: BlogPost[] = [
       <h3>Conclusion</h3>
       <p>Awareness is power. Knowing your rights as a consumer helps drive accountability and quality in the Nigerian marketplace.</p>
     `,
-    image:
-      "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
     author: "Oluwole Kolawole",
     date: "October 20, 2024",
     readTime: "5 min read",

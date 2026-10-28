@@ -1,11 +1,11 @@
-import { motion } from "framer-motion";
 import Layout from "@/components/layout/Layout";
 import SEO from "@/components/SEO";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { logo } from "@/assets";
+import PageHero from "@/components/ui/PageHero";
+import { Reveal } from "@/components/motion/Reveal";
 import { getArticles } from "@/lib/articles";
 import { getInstagramPosts } from "@/lib/instagram";
 import type { BlogPost } from "@/data/articles";
@@ -126,65 +126,39 @@ const Blog = () => {
         description="Stay informed with the latest legal insights, industry updates, and expert commentary from O.A. Kolawole & Co. on Nigerian law and business."
         canonicalUrl="/blog"
       />
-      {/* Hero Section */}
-      <section className="relative pt-32 pb-20 bg-navy-gradient overflow-hidden">
-        <div className="absolute inset-0 opacity-5">
-          <div
-            className="absolute inset-0"
-            style={{
-              backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23CFA44A' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-            }}
-          />
-        </div>
-        <div className="container-custom relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="max-w-3xl"
-          >
-            <span className="inline-block text-accent font-medium text-sm uppercase tracking-wider mb-4">
-              Insights & Updates
-            </span>
-            <h1 className="font-playfair text-4xl md:text-5xl lg:text-6xl font-semibold text-white mb-6">
-              Blog
-            </h1>
-            <p className="text-xl text-white/70 leading-relaxed">
-              Stay informed with our latest legal insights, industry updates,
-              and expert commentary on matters that affect you and your
-              business.
-            </p>
-          </motion.div>
-        </div>
-      </section>
-      <header className="sticky top-0 z-40 border-b bg-background/80 backdrop-blur">
-        <div className="container-custom flex items-center justify-between py-3">
-          <div className="flex items-center gap-3">
-            <img src={logo} alt="" className="h-8 w-auto" />
-            <h1 className="text-lg font-semibold hidden md:block">Explore</h1>
-          </div>
+      <PageHero
+        label="Insights & Updates"
+        title="Legal"
+        accent="Insights"
+        description="Stay informed with our latest legal insights, industry updates, and expert commentary on matters that affect you and your business."
+      />
+      <div className="sticky top-20 z-30 border-b border-border bg-background/85 backdrop-blur-xl">
+        <div className="container-custom flex items-center justify-between gap-4 py-3">
+          <p className="text-sm text-muted-foreground" aria-live="polite">
+            {active === "articles" ? `${aCount} articles` : `${iCount} posts`}
+          </p>
           <Tabs
             value={active}
             onValueChange={(v) => setActive(v as "articles" | "instagram")}
           >
-            <TabsList className="bg-secondary">
+            <TabsList className="h-11 rounded-full bg-secondary p-1">
               <TabsTrigger
                 value="articles"
-                className="data-[state=active]:bg-accent data-[state=active]:text-accent-foreground transition-all duration-300 ease-in-out"
+                className="rounded-full px-5 h-9 data-[state=active]:bg-accent data-[state=active]:text-accent-foreground data-[state=active]:shadow-sm transition-all duration-300 ease-in-out"
               >
                 Articles
               </TabsTrigger>
               <TabsTrigger
                 value="instagram"
-                className="data-[state=active]:bg-accent data-[state=active]:text-accent-foreground transition-all duration-300 ease-in-out"
+                className="rounded-full px-5 h-9 data-[state=active]:bg-accent data-[state=active]:text-accent-foreground data-[state=active]:shadow-sm transition-all duration-300 ease-in-out"
               >
                 Instagram
               </TabsTrigger>
             </TabsList>
           </Tabs>
         </div>
-      </header>
-      <section className="container-custom py-6">
+      </div>
+      <section className="container-custom py-12 md:py-16">
         <Tabs
           value={active}
           onValueChange={(v) => setActive(v as "articles" | "instagram")}
@@ -221,22 +195,17 @@ const Blog = () => {
               </div>
             ) : (
               <>
-                <div
-                  className="mb-4 text-sm text-muted-foreground"
-                  aria-live="polite"
-                >
-                  {aCount} articles
-                </div>
-                <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
+                <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
                   {articles.map((a, i) => (
                     <ArticleCard key={a.id} article={a} index={i} />
                   ))}
                 </div>
                 <div ref={aSentinelRef} className="h-px w-full" />
                 {aHasMore && (
-                  <div className="mt-6 flex justify-center">
+                  <div className="mt-10 flex justify-center">
                     <Button
                       variant="outline"
+                      className="rounded-full px-8 h-12 hover:border-accent hover:text-accent"
                       onClick={() => {
                         const next = aPage + 1;
                         setAPage(next);
@@ -295,22 +264,19 @@ const Blog = () => {
               </div>
             ) : (
               <>
-                <div
-                  className="mb-4 text-sm text-muted-foreground"
-                  aria-live="polite"
-                >
-                  {iCount} posts
-                </div>
-                <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
-                  {posts.map((p) => (
-                    <PostCard key={p.id} post={p} />
+                <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+                  {posts.map((p, i) => (
+                    <Reveal key={p.id} delay={(i % 3) * 0.1}>
+                      <PostCard post={p} />
+                    </Reveal>
                   ))}
                 </div>
                 <div ref={iSentinelRef} className="h-px w-full" />
                 {iHasMore && (
-                  <div className="mt-6 flex justify-center">
+                  <div className="mt-10 flex justify-center">
                     <Button
                       variant="outline"
+                      className="rounded-full px-8 h-12 hover:border-accent hover:text-accent"
                       onClick={() => {
                         const next = iPage + 1;
                         setIPage(next);
@@ -330,33 +296,25 @@ const Blog = () => {
 
       {/* Newsletter CTA */}
       <section className="section-padding bg-secondary">
-        <div className="container-custom">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center max-w-2xl mx-auto"
-          >
-            <h2 className="font-playfair text-3xl md:text-4xl font-semibold text-primary mb-4">
-              Stay Informed
-            </h2>
-            <p className="text-muted-foreground text-lg mb-8">
-              Subscribe to our newsletter for the latest legal insights,
-              industry updates, and firm news delivered to your inbox.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="flex-1 px-4 py-3 rounded-md border border-border bg-background focus:outline-none focus:ring-2 focus:ring-accent"
-              />
-              <button className="bg-accent hover:bg-accent/90 text-accent-foreground font-medium px-6 py-3 rounded-md transition-all">
-                Subscribe
-              </button>
-            </div>
-          </motion.div>
-        </div>
+        <Reveal className="container-custom text-center max-w-2xl">
+          <span className="eyebrow mb-5">Newsletter</span>
+          <h2 className="font-playfair text-3xl md:text-4xl font-semibold text-primary mb-4">
+            Stay Informed
+          </h2>
+          <p className="text-muted-foreground text-lg mb-8">
+            Subscribe to our newsletter for the latest legal insights,
+            industry updates, and firm news delivered to your inbox.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3 max-w-lg mx-auto rounded-full sm:bg-card sm:border sm:border-border sm:p-1.5 sm:shadow-soft">
+            <input
+              type="email"
+              placeholder="Enter your email"
+              aria-label="Email address"
+              className="flex-1 h-12 px-5 rounded-full border border-border sm:border-0 bg-card sm:bg-transparent focus:outline-none focus:ring-2 focus:ring-accent sm:focus:ring-0"
+            />
+            <button className="btn-gold h-12">Subscribe</button>
+          </div>
+        </Reveal>
       </section>
     </Layout>
   );

@@ -2,6 +2,11 @@ import { motion } from "framer-motion";
 import Layout from "@/components/layout/Layout";
 import SEO from "@/components/SEO";
 import SectionHeader from "@/components/ui/SectionHeader";
+import PageHero from "@/components/ui/PageHero";
+import BrandVisual from "@/components/ui/BrandVisual";
+import SpotlightCard from "@/components/ui/SpotlightCard";
+import { EASE_OUT, Reveal, WordReveal } from "@/components/motion/Reveal";
+import { optimizeImage } from "@/lib/utils";
 import { MapPin, Target, Eye, Heart, Scale, Shield, Users } from "lucide-react";
 
 const values = [
@@ -29,7 +34,12 @@ const values = [
   },
 ];
 
-const offices = [
+const offices: {
+  city: string;
+  type: string;
+  address: string;
+  image?: string;
+}[] = [
   {
     city: "Abuja",
     type: "Head Office",
@@ -50,8 +60,6 @@ const offices = [
     city: "Jos",
     type: "Branch Office",
     address: "No. 3, Constitutional Hill Road, Jos, Plateau State",
-    image:
-      "https://images.unsplash.com/photo-1497366811353-6870744d04b2?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
   },
 ];
 
@@ -63,55 +71,25 @@ const About = () => {
         description="Learn about O.A. Kolawole & Co., a leading Nigerian law firm committed to excellence, integrity, and client success. Discover our history and core values."
         canonicalUrl="/about"
       />
-      {/* Hero Section */}
-      <section className="relative pt-32 pb-20 bg-navy-gradient overflow-hidden">
-        <div className="absolute inset-0 opacity-5">
-          <div
-            className="absolute inset-0"
-            style={{
-              backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23CFA44A' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-            }}
-          />
-        </div>
-        <div className="container-custom relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="max-w-3xl"
-          >
-            <span className="inline-block text-accent font-medium text-sm uppercase tracking-wider mb-4">
-              About Us
-            </span>
-            <h1 className="font-playfair text-4xl md:text-5xl lg:text-6xl font-semibold text-white mb-6">
-              A Legacy of Legal Excellence
-            </h1>
-            <p className="text-xl text-white/70 leading-relaxed">
-              O.A. Kolawole & Co. is a full-service Nigerian law firm committed
-              to excellence, ethics, and professionalism in every aspect of our
-              practice.
-            </p>
-          </motion.div>
-        </div>
-      </section>
+      <PageHero
+        label="About Us"
+        title="A Legacy of Legal"
+        accent="Excellence"
+        description="O.A. Kolawole & Co. is a full-service Nigerian law firm committed to excellence, ethics, and professionalism in every aspect of our practice."
+      />
 
       {/* Our Story */}
-      <section className="section-padding bg-background">
+      <section className="section-padding bg-background overflow-hidden">
         <div className="container-custom">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.7 }}
-            >
-              <span className="inline-block text-accent font-medium text-sm uppercase tracking-wider mb-4">
-                Our Story
-              </span>
-              <h2 className="font-playfair text-3xl md:text-4xl font-semibold text-primary mb-6">
-                Building Trust Through Excellence
+          <div className="grid lg:grid-cols-2 gap-14 lg:gap-20 items-center">
+            <div>
+              <Reveal>
+                <span className="eyebrow mb-5">Our Story</span>
+              </Reveal>
+              <h2 className="font-playfair text-3xl md:text-4xl lg:text-5xl font-semibold text-primary mb-6 leading-tight">
+                <WordReveal text="Building Trust Through" accent="Excellence" />
               </h2>
-              <div className="space-y-4 text-muted-foreground leading-relaxed">
+              <Reveal delay={0.15} className="space-y-4 text-muted-foreground leading-relaxed">
                 <p>
                   O.A. Kolawole & Co. is a full-service law firm positioned to
                   render high quality legal services tailored to meet the unique
@@ -132,24 +110,32 @@ const About = () => {
                   we are committed to developing innovative strategies to help
                   achieve both immediate and long-term goals.
                 </p>
-              </div>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.7 }}
-              className="relative"
-            >
-              <div className="aspect-[4/4] rounded-2xl overflow-hidden shadow-elegant">
-                <img
-                  src="https://res.cloudinary.com/dgxl5swen/image/upload/v1769614564/kolawole.jpg"
-                  alt="Law firm team discussion"
+              </Reveal>
+            </div>
+            <div className="relative">
+              <motion.div
+                initial={{ clipPath: "inset(0% 0% 100% 0% round 1.5rem)" }}
+                whileInView={{ clipPath: "inset(0% 0% 0% 0% round 1.5rem)" }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 1.2, ease: EASE_OUT }}
+                className="aspect-square rounded-3xl overflow-hidden shadow-lift"
+              >
+                <motion.img
+                  src={optimizeImage(
+                    "https://res.cloudinary.com/dgxl5swen/image/upload/v1769614564/kolawole.jpg",
+                    900,
+                  )}
+                  alt="Oluwole Kolawole, Principal Partner of O.A. Kolawole & Co."
+                  initial={{ scale: 1.2 }}
+                  whileInView={{ scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 1.6, ease: EASE_OUT }}
                   className="w-full h-full object-cover"
                 />
-              </div>
-              <div className="absolute -bottom-6 -left-6 w-24 h-24 bg-accent/20 rounded-2xl -z-10" />
-            </motion.div>
+              </motion.div>
+              <div className="absolute -bottom-6 -left-6 w-28 h-28 bg-accent/20 rounded-3xl -z-10" />
+              <div className="absolute -top-8 -right-8 w-32 h-32 rounded-full border border-dashed border-accent/40 -z-10 animate-spin-slow" />
+            </div>
           </div>
         </div>
       </section>
@@ -157,47 +143,37 @@ const About = () => {
       {/* Mission & Vision */}
       <section className="section-padding bg-secondary">
         <div className="container-custom">
-          <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="p-8 lg:p-10 bg-card rounded-2xl shadow-soft"
-            >
-              <div className="w-14 h-14 rounded-lg bg-accent/10 flex items-center justify-center mb-6">
-                <Target className="w-7 h-7 text-accent" />
-              </div>
-              <h3 className="font-playfair text-2xl font-semibold text-primary mb-4">
-                Our Mission
-              </h3>
-              <p className="text-muted-foreground leading-relaxed">
-                To provide high-quality legal services tailored to meet the
-                unique needs of each client, while maintaining the highest
-                standards of ethics and professionalism. We are committed to
-                being the trusted legal partner our clients deserve.
-              </p>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="p-8 lg:p-10 bg-card rounded-2xl shadow-soft"
-            >
-              <div className="w-14 h-14 rounded-lg bg-accent/10 flex items-center justify-center mb-6">
-                <Eye className="w-7 h-7 text-accent" />
-              </div>
-              <h3 className="font-playfair text-2xl font-semibold text-primary mb-4">
-                Our Vision
-              </h3>
-              <p className="text-muted-foreground leading-relaxed">
-                To be recognized as a leading Nigerian law firm known for
-                excellence, integrity, and innovative legal solutions. We aspire
-                to set the standard for legal practice in Nigeria, delivering
-                value that exceeds our clients' expectations.
-              </p>
-            </motion.div>
+          <div className="grid md:grid-cols-2 gap-8 lg:gap-10">
+            {[
+              {
+                icon: Target,
+                title: "Our Mission",
+                text: "To provide high-quality legal services tailored to meet the unique needs of each client, while maintaining the highest standards of ethics and professionalism. We are committed to being the trusted legal partner our clients deserve.",
+              },
+              {
+                icon: Eye,
+                title: "Our Vision",
+                text: "To be recognized as a leading Nigerian law firm known for excellence, integrity, and innovative legal solutions. We aspire to set the standard for legal practice in Nigeria, delivering value that exceeds our clients' expectations.",
+              },
+            ].map((item, index) => (
+              <Reveal key={item.title} delay={index * 0.15} className="h-full">
+                <SpotlightCard className="group h-full p-8 lg:p-12 bg-card rounded-3xl border border-border shadow-soft transition-all duration-500 hover:shadow-lift hover:-translate-y-1">
+                  <item.icon
+                    className="absolute -right-6 -top-6 w-40 h-40 text-accent/[0.06] transition-transform duration-700 group-hover:rotate-12 group-hover:scale-110"
+                    strokeWidth={1}
+                  />
+                  <div className="relative w-14 h-14 rounded-xl bg-accent flex items-center justify-center mb-8">
+                    <item.icon className="w-7 h-7 text-accent-foreground" />
+                  </div>
+                  <h3 className="relative font-playfair text-2xl md:text-3xl font-semibold text-primary mb-4">
+                    {item.title}
+                  </h3>
+                  <p className="relative text-muted-foreground leading-relaxed">
+                    {item.text}
+                  </p>
+                </SpotlightCard>
+              </Reveal>
+            ))}
           </div>
         </div>
       </section>
@@ -212,24 +188,22 @@ const About = () => {
           />
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {values.map((value, index) => (
-              <motion.div
-                key={value.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="text-center p-6"
-              >
-                <div className="w-16 h-16 rounded-full bg-accent/10 flex items-center justify-center mx-auto mb-4">
-                  <value.icon className="w-8 h-8 text-accent" />
+              <Reveal key={value.title} delay={index * 0.1} className="h-full">
+                <div className="group h-full text-center p-8 rounded-3xl border border-transparent transition-all duration-500 hover:border-border hover:bg-card hover:shadow-soft">
+                  <div className="relative w-20 h-20 mx-auto mb-6">
+                    <span className="absolute inset-0 rounded-full border border-dashed border-accent/40 transition-transform duration-[1.5s] group-hover:rotate-180" />
+                    <span className="absolute inset-2 rounded-full bg-accent/10 flex items-center justify-center transition-colors duration-500 group-hover:bg-accent">
+                      <value.icon className="w-7 h-7 text-accent transition-colors duration-500 group-hover:text-accent-foreground" />
+                    </span>
+                  </div>
+                  <h3 className="font-playfair text-xl font-semibold text-primary mb-2">
+                    {value.title}
+                  </h3>
+                  <p className="text-muted-foreground text-sm leading-relaxed">
+                    {value.description}
+                  </p>
                 </div>
-                <h3 className="font-playfair text-xl font-semibold text-primary mb-2">
-                  {value.title}
-                </h3>
-                <p className="text-muted-foreground text-sm">
-                  {value.description}
-                </p>
-              </motion.div>
+              </Reveal>
             ))}
           </div>
         </div>
@@ -245,38 +219,35 @@ const About = () => {
           />
           <div className="grid md:grid-cols-3 gap-8">
             {offices.map((office, index) => (
-              <motion.div
-                key={office.city}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.15 }}
-                className="group"
-              >
-                <div className="bg-card rounded-2xl overflow-hidden shadow-soft transition-all duration-300 hover:shadow-elegant">
-                  <div className="aspect-[16/10] overflow-hidden">
-                    <img
-                      src={office.image}
-                      alt={`${office.city} office`}
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
+              <Reveal key={office.city} delay={index * 0.15} className="h-full">
+                <div className="group h-full bg-card rounded-3xl overflow-hidden border border-border shadow-soft transition-all duration-500 hover:shadow-lift hover:-translate-y-2">
+                  <div className="relative aspect-[16/11] overflow-hidden">
+                    {office.image ? (
+                      <img
+                        src={optimizeImage(office.image, 700)}
+                        alt={`${office.city} office`}
+                        loading="lazy"
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      />
+                    ) : (
+                      <BrandVisual icon={MapPin} label={`${office.city} office`} className="w-full h-full" />
+                    )}
+                    <span className="absolute top-4 left-4 rounded-full bg-white/90 backdrop-blur px-3 py-1 text-xs font-medium text-navy">
+                      {office.type}
+                    </span>
                   </div>
-                  <div className="p-6">
-                    <div className="flex items-center gap-2 mb-2">
-                      <MapPin size={16} className="text-accent" />
-                      <span className="text-accent text-sm font-medium">
-                        {office.type}
-                      </span>
-                    </div>
-                    <h3 className="font-playfair text-xl font-semibold text-primary mb-2">
+                  <div className="p-7">
+                    <h3 className="font-playfair text-2xl font-semibold text-primary mb-3 flex items-center gap-2">
                       {office.city}
+                      <span className="h-px flex-1 bg-border" />
                     </h3>
-                    <p className="text-muted-foreground text-sm min-h-[2lh] leading-relaxed">
+                    <p className="flex gap-2 text-muted-foreground text-sm leading-relaxed">
+                      <MapPin size={16} className="text-accent mt-0.5 flex-shrink-0" />
                       {office.address}
                     </p>
                   </div>
                 </div>
-              </motion.div>
+              </Reveal>
             ))}
           </div>
         </div>

@@ -1,5 +1,8 @@
-import { motion } from "framer-motion";
 import { Trophy, Users, Building, Award } from "lucide-react";
+import SectionHeader from "@/components/ui/SectionHeader";
+import SpotlightCard from "@/components/ui/SpotlightCard";
+import HeroBackdrop from "@/components/ui/HeroBackdrop";
+import { Reveal } from "@/components/motion/Reveal";
 
 const achievements = [
   {
@@ -30,50 +33,31 @@ const achievements = [
 
 const Achievements = () => {
   return (
-    <section className="section-padding bg-navy-gradient">
-      <div className="container-custom">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center max-w-3xl mx-auto mb-12 md:mb-16"
-        >
-          <span className="inline-block text-accent font-medium text-sm uppercase tracking-wider mb-4">
-            Our Track Record
-          </span>
-          <h2 className="font-playfair text-3xl md:text-4xl lg:text-5xl font-semibold text-white mb-4">
-            Notable Achievements
-          </h2>
-          <p className="text-white/70 text-lg">
-            Our firm has successfully represented clients in landmark cases
-            across Nigeria, establishing a reputation for excellence in legal
-            practice.
-          </p>
-        </motion.div>
+    <section className="relative section-padding bg-navy-gradient overflow-hidden">
+      <HeroBackdrop />
+      <div className="container-custom relative">
+        <SectionHeader
+          light
+          label="Our Track Record"
+          title="Notable Achievements"
+          description="Our firm has successfully represented clients in landmark cases across Nigeria, establishing a reputation for excellence in legal practice."
+        />
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           {achievements.map((achievement, index) => (
-            <motion.div
-              key={achievement.title}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="group"
-            >
-              <div className="h-full p-6 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 transition-all duration-300 hover:bg-white/10 hover:border-accent/30">
-                <div className="w-12 h-12 rounded-lg bg-accent/20 flex items-center justify-center mb-4 transition-transform duration-300 group-hover:scale-110">
-                  <achievement.icon className="w-6 h-6 text-accent" />
+            <Reveal key={achievement.title} delay={index * 0.12} className="h-full">
+              <SpotlightCard className="group h-full p-7 bg-white/[0.04] backdrop-blur-sm rounded-2xl border border-white/10 transition-all duration-500 hover:border-accent/40 hover:-translate-y-2">
+                <div className="relative w-14 h-14 rounded-xl bg-accent/15 border border-accent/30 flex items-center justify-center mb-6 transition-all duration-500 group-hover:bg-accent group-hover:scale-110">
+                  <achievement.icon className="w-6 h-6 text-accent transition-colors duration-500 group-hover:text-accent-foreground" />
                 </div>
-                <h3 className="font-playfair text-lg font-semibold text-white mb-2">
+                <h3 className="relative font-playfair text-xl font-semibold text-white mb-3">
                   {achievement.title}
                 </h3>
-                <p className="text-white/60 text-sm leading-relaxed">
+                <p className="relative text-white/60 text-sm leading-relaxed">
                   {achievement.description}
                 </p>
-              </div>
-            </motion.div>
+              </SpotlightCard>
+            </Reveal>
           ))}
         </div>
       </div>

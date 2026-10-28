@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
+import { EASE_OUT, WordReveal } from '@/components/motion/Reveal';
 
 interface SectionHeaderProps {
   label?: string;
@@ -19,11 +20,7 @@ const SectionHeader = ({
   className,
 }: SectionHeaderProps) => {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.6 }}
+    <div
       className={cn(
         'mb-12 md:mb-16',
         centered && 'text-center max-w-3xl mx-auto',
@@ -31,29 +28,39 @@ const SectionHeader = ({
       )}
     >
       {label && (
-        <span className="inline-block text-accent font-medium text-sm uppercase tracking-wider mb-4">
+        <motion.span
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, ease: EASE_OUT }}
+          className="eyebrow mb-5"
+        >
           {label}
-        </span>
+        </motion.span>
       )}
       <h2
         className={cn(
-          'font-playfair text-3xl md:text-4xl lg:text-5xl font-semibold mb-4',
+          'font-playfair text-3xl md:text-4xl lg:text-5xl font-semibold mb-5 leading-tight',
           light ? 'text-white' : 'text-primary'
         )}
       >
-        {title}
+        <WordReveal text={title} />
       </h2>
       {description && (
-        <p
+        <motion.p
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7, delay: 0.2, ease: EASE_OUT }}
           className={cn(
             'text-lg leading-relaxed',
             light ? 'text-white/70' : 'text-muted-foreground'
           )}
         >
           {description}
-        </p>
+        </motion.p>
       )}
-    </motion.div>
+    </div>
   );
 };
 

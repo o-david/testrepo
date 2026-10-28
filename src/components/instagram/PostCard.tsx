@@ -14,6 +14,7 @@ import {
 import { toast } from "@/components/ui/use-toast";
 import type { InstagramPost } from "@/types/instagram";
 import { cn } from "@/lib/utils";
+import { logo2 } from "@/assets";
 
 interface PostCardProps {
   post: InstagramPost;
@@ -123,7 +124,7 @@ export function PostCard({ post, className }: PostCardProps) {
   };
 
   const media = (
-    <div className="group relative overflow-hidden rounded-lg bg-black">
+    <div className="group relative overflow-hidden bg-navy">
       <AspectRatio ratio={1}>
         {post.media_type === "VIDEO" ? (
           <video
@@ -149,25 +150,22 @@ export function PostCard({ post, className }: PostCardProps) {
                 ))}
               </CarouselContent>
               <CarouselPrevious
-                className="bg-background/80 z-50 backdrop-blur border-4 border-red-900 hover:bg-background transition-colors duration-300 ease-in-out"
+                className="left-3 z-10 bg-background/80 backdrop-blur border-0 hover:bg-accent hover:text-accent-foreground transition-colors duration-300 ease-in-out"
                 aria-label="Previous image"
               />
               <CarouselNext
-                className="bg-background/80 backdrop-blur border-4 border-red-900 hover:bg-background transition-colors duration-300 ease-in-out"
+                className="right-3 z-10 bg-background/80 backdrop-blur border-0 hover:bg-accent hover:text-accent-foreground transition-colors duration-300 ease-in-out"
                 aria-label="Next image"
               />
             </Carousel>
           </div>
         ) : (
-          <>
-            <img
-              src={post.media_url[0]}
-              alt=""
-              className="h-full w-full object-cover transition-transform duration-300 ease-in-out group-hover:scale-105"
-              loading="lazy"
-            />
-            <p className="text-white">i loaded</p>
-          </>
+          <img
+            src={post.media_url[0]}
+            alt=""
+            className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+            loading="lazy"
+          />
         )}
       </AspectRatio>
       <a
@@ -186,13 +184,17 @@ export function PostCard({ post, className }: PostCardProps) {
   return (
     <article
       className={cn(
-        "rounded-xl border bg-card shadow-soft focus-within:ring-2 focus-within:ring-accent",
+        "overflow-hidden rounded-2xl border bg-card shadow-soft transition-all duration-500 hover:shadow-lift hover:-translate-y-1 focus-within:ring-2 focus-within:ring-accent",
         className,
       )}
     >
       <header className="flex items-center gap-3 p-4">
-        <Avatar className="h-10 w-10">
-          <AvatarImage src={post.profile_picture_url} alt="" />
+        <Avatar className="h-10 w-10 bg-navy ring-2 ring-accent/40">
+          <AvatarImage
+            src={post.profile_picture_url || logo2}
+            alt=""
+            className="object-contain p-1.5"
+          />
           <AvatarFallback aria-hidden>
             {post.username.slice(0, 2).toUpperCase()}
           </AvatarFallback>
